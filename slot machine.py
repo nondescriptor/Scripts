@@ -1,17 +1,12 @@
 #!/usr/bin/python3
 
-import time
-import random
-import contextlib
+# This was my first python script so it's a bit verbose with comments
+# The script asks user how much they want to bet on how many lines
+# It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
+# Finally, it calculates the amount won by the user
 
-# Create function to time other functions
-def tictoc(func):
-	def wrapper():
-		t1 = time.time()
-		func()
-		t2 = round(time.time()-t1,4)
-		print(f"{func.__name__}() ran in {t2} seconds")
-	return wrapper
+# Import required libraries
+import time, random, contextlib
 
 # Collect user info
 def deposit():
@@ -27,6 +22,9 @@ def deposit():
 				print("Amount must be greater than 0.")
 		else:
 			print("Please enter a number.")
+	# Return function sends objects/values back to the caller
+	# Without return, the output of desposit() will be a None value
+	# and any fuction that calls deposit() will receive None as the value
 	return amount
 
 def get_number_of_lines():
@@ -62,9 +60,12 @@ def get_bet():
 			print("Please enter a number.")
 	return amount
 
-# We will pass 3 parameters to this function
 # The parameters don't have to match the actual name of the variables
-def spin_slot_machine(rows, cols, symbols):
+# I've applied 'type hints' to this function just for the sake of trying it out
+# -> tells us the data type of the output
+# Type hints are only really useful when using a static type checker in vscode (or whatever IDE)
+# and also to be extra explicit to whoever else comes across your script
+def spin_slot_machine(rows: int, cols: int, symbols: dict) -> list:
 	# In order to put new symbols in each row and column every time we spin
 	# we should create a list and select symbols from it randomly
 
@@ -104,8 +105,9 @@ def spin_slot_machine(rows, cols, symbols):
 			# Add "row" to column
 			column.append(var)
 		# Once all rows have been filled, add column to reel
-		reels.append(column)
+		reels.append(column)	
 	#print(reels)
+	#print(type(reels))
 	#print(len(reels))
 	#return reels
 
@@ -113,7 +115,7 @@ def spin_slot_machine(rows, cols, symbols):
 	# This method only works up to a certain amount of rows and columns for some reason
 	# Take length of list and iterate over it
 	# In this case reel has 3 lists (or columns) so i = 3
-	# reel[0] assumes there's always at least 1 column, if we passed a parameter with 0 columns
+	# reel[0] assumes there's always at least 1 column; if we passed a parameter with 0 columns
 	# it would crash
 	for i in range(len(reels[0])):
 		for row in reels:
@@ -149,10 +151,27 @@ def check_winnings(reels, lines, bet, values):
 			winnings = values[first_symbol] * bet
 	return winnings
 
-# Add python decorator to run this function inside tictoc
-#@tictoc
+# Create function to time other functions
+def timer(func):
+	# This wrapper (inner function) is necessary so that the function decorator (timer)
+	# receives a function object to decorate, and returns the decorated function
+	# Wrapper function will take any positional arguments and any keyword arguments
+	# That way, we can pass any function to it
+	def wrapper(*args, **kwargs):
+		t1 = time.time() # start time
+		result = func(*args, **kwargs) # call decorated function
+		t2 = round(time.time()-t1,4) # end time
+		print(f"\n\nFunction {func.__name__}() took {t2} seconds")
+		# We return the result so that the decorated function will always function as if it hadn't been 
+		# decorated in the first place (just with additional functionality from the wrapper function)
+		#return result
+	return wrapper
+
+# Add python decorator to pass this function to timer()
+@timer
 def main():
 	balance = deposit()
+	print(balance)
 	lines = get_number_of_lines()
 	while True:
 		bet = get_bet()
@@ -165,14 +184,14 @@ def main():
 			break
 	print(f"You are betting ${bet} on {lines} lines.\nYour total bet is ${total_bet}")
 	reels = spin_slot_machine(ROWS,COLS,symbols)
-	winnings = check_winnings(reels, lines, bet, values):
+	#winnings = check_winnings(reels, lines, bet, values)
 #---------------------------------------------------------------------------------------------------------------
 # Global constant value that will not change (MUST BE ALL CAPS)
 MAX_LINES = 3
 MAX_BET = 100
 MIN_BET = 1
 
-# Number of symbols per reel (dictionary)
+# Number of symbols per column (dictionary)
 # The symbol will be a string followed by its number of instances based on
 # how valuable it is (lower is better)
 symbols = {"A":2,"B":4,"C":6,"D":8,}
@@ -180,7 +199,16 @@ symbols = {"A":2,"B":4,"C":6,"D":8,}
 values = {"A":5,"B":4,"C":3,"D":2,}
 
 # Size of slot machine
-ROWS = 3
-COLS = 3
+# I've used type hints here for the sake of trying it out
+# Only really useful when used in conjunction with a static type checker
+ROWS: int = 3
+COLS: int = 3
 
-main()
+# This convention is importtant to have when importing modules so you don't run code you didn't intend to
+# In other words, the code below this line will only execute when run within this script
+# and not when imported to other scripts as a module
+# Also, in vscode, it helps in ensuring you're running the correct script when switching between tabs
+# by running  it from the green arrow next to it instead of clicking run at the top
+# It also tells the reader that the script is meant to be run and not just imported
+if __name__ == "__main__":
+	main()

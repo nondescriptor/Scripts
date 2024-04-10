@@ -1,21 +1,28 @@
 #!/usr/bin/python3
 
-#importing image object from PIL 
-import math
-# Import Pillow module
-# From help('PIL')
-# enter pyhton3 in terminal to enter shell, q to quit or exit()
-from PIL import Image, ImageDraw, PSDraw
+# This script is a work in progress. I wanted to try my hands at creating a simple hangman game using
+# the popular pygame library
+# help('pygame')
 
+# Import required libraries
+import pygame, sys
+# This imports all functions from pygame.locals module
+# This syntax is genreally to be more concise about what you're importing
+# even thopugh you're still technically importing the whole library
+from pygame.locals import *
 
-  
-w, h = 220, 190
-  
-# creating new Image object 
-img = Image.new("RGB", (w, h)) 
-  
-# create  rectangleimage 
-img1 = ImageDraw.Draw(img)   
-img1(fill ="# 800080")
-img.show() 
+def main()
+	pygame.init()
+	DISPLAY = pygame.display.set_mode((500,400),0,32)
+	WHITE = (255,255,255)
+	BLUE = (0,0,255)
+	DISPLAY.fill(WHITE)
+	pygame.draw.rect(DISPLAY,BLUE(200,150,100,50))
+	while True:
+		for event in pygame.event.get():
+			if event,type==QUIT:
+				pygame.quit()
+				sys.exit()
+		pygame.display.update()
 
+main()

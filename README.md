@@ -4,7 +4,7 @@ This repo contains a collection of scripts I've written either for fun or for my
 - A few examples include:
   - `rhythmbox importer.sh` which edits, converts, and imports android playlists into rhythmbox.
   - `scanner.ps1` which automates the scanning process in windows and converts result to pdf.
-  - `hangman.py` is simply a hangman game.
+  - `slot machine.py` is a simple slot machine CLI game.
 
 # About `me`
 
