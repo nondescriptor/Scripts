@@ -5,81 +5,28 @@
 # It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
 # Finally, it calculates the amount won by the user
 
-class Slot_machine:
-
-	def __init__(self, rows, cols, symbols):
-		self.rows = rows
-		self.cols = cols
-		self.symbols = symbols
-
-	# The parameters don't have to match the actual name of the variables
-	def spin(self):
-		# In order to put new symbols in each row and column every time we spin
-		# we should create a list and select symbols from it randomly
-
-		# Create empty list and add all possible symbols to it
-		# We could create the list statically but by iterating over the dictionary
-		# we can dynamically adjust the chances of any given symbol being picked later on if we want
-		all_symbols = []
-		# Since we're iterating over the dictionary parameter we're passing to this function
-		# (which is basically a list of key:value pairs) we can use the items() method
-		# which will iterate over both (key=symbol and # of value=# of instances) instead of only one
-		for symbol, instance in self.symbols.items():
-			# _ is an anonymous variable
-			# Since we don't care about the iteration value (or rather what iteration # we're on) we can use this
-			# to keep us from having an unused variable
-
-			# Iterate over values for each key to add corresponding # of instances for each symbol
-			for _ in range(instance):
-				# Add key (or rather symbol) to list
-				all_symbols.append(symbol)
-
-		# Randomly select and place symbols in all rows and place those rows in our columns for each spin
-		# To visualize it: (reels = [[row1,row2,row3], [row1,row2,row3], [row1,row2,row3]])
-		reels = []
-		# Iterate over number of columns we established in global variable
-		for _ in range(self.cols):
-			column = []
-			# Create copy of list (as opposed to just a reference to the variable)
-			current_symbols = all_symbols[:]
-			# Iterate over all rows for given column
-			# Number of rows cannot exceed number of symbols
-			for _ in range(self.rows):
-				# The choice() method returns a randomly selected element
-				var = random.choice(current_symbols)
-				# Remove it from the list so the probability of choosing the same symbol for the same
-				# column decreases correspondingly
-				current_symbols.remove(var)
-				# Add "row" to column
-				column.append(var)
-			# Once all rows have been filled, add column to reel
-			reels.append(column)
-		return reels
-
-	# I've applied 'type hints' to this function just for the sake of trying it out
-	# -> tells us the data type of the output
-	# Type hints are only really useful when using a static type checker in vscode (or whatever IDE)
-	# and also to be extra explicit to whoever else comes across your script
-	def transpose(self, reels: list) -> list:
-		# Transpose the reels matrices using naive method to display them vertically
-		# Since this is a nested list we will need 2 for-loops
-
-		# Basically print 1st character of each sublist (column) in the same line
-		# then print new line for the 2nd and so on
-		# For a slot machine with 3 rows and columns
-		# column1[0], column2[0], column3[0]
-		# column1[1], column2[1], column3[1]
-		# column1[2], column2[2], column3[2]
-
-		# Get number of elements in a sublist (column) to iterate over (determines # of rows)
-		for i in range(len(reels[0])):
-			# Iterate over each sublist (column)
-			for column in reels:
-				# Select element in column positionally, print it, and add " | " at the end
-				print(column[i], end=" | ")
-			# Once nth element in all sublists has been printed on same line, print new empty line for next row
-			print()
-
+# Add python decorator to pass this function to timer()
+#@timer
+def main():
+	balance = deposit()
+	lines = get_number_of_lines()
+	while True:
+		bet = get_bet()
+		total_bet = lines * bet
+		max_dynamic_bet = round(balance / lines)
+		if total_bet > balance:
+			print(f"${bet} on {lines} lines is ${total_bet}, which exceeds your balance of ${balance}\n"
+			      f"Your maximum bet per line is ${max_dynamic_bet}")
+		else:
+			break
+	print(f"You are betting ${bet} on {lines} lines.\nYour total bet is ${total_bet}")
+	machine = spin_slot_machine(ROWS,COLS,symbols)
+	# We don't have to print this since that's already done within the transpose function
+	vertical_machine = transpose(machine)
+	winnings = check_winnings(machine, lines, bet, values)
+	
+	#if winnings > 0:
+		#print(f"Congratulations! You've won ${winnings}")
 #===============================================================================================================
 # Collect user info
 def deposit():
@@ -133,11 +80,76 @@ def get_bet():
 			print("Please enter a number.")
 	return amount
 
+# The parameters don't have to match the actual name of the variables
 # I've applied 'type hints' to this function just for the sake of trying it out
 # -> tells us the data type of the output
 # Type hints are only really useful when using a static type checker in vscode (or whatever IDE)
 # and also to be extra explicit to whoever else comes across your script
-def check_winnings(reels: list, lines: int, bet: int, values: dict) -> int:
+def spin_slot_machine(rows: int, cols: int, symbols: dict) -> list:
+	# In order to put new symbols in each row and column every time we spin
+	# we should create a list and select symbols from it randomly
+
+	# Create empty list and add all possible symbols to it
+	# We could create the list statically but by iterating over the dictionary
+	# we can dynamically adjust the chances of any given symbol being picked later on if we want
+	all_symbols = []
+	# Since we're iterating over the dictionary parameter we're passing to this function
+	# (which is basically a list of key:value pairs) we can use the items() method
+	# which will iterate over both (key=symbol and # of value=# of instances) instead of only one
+	for symbol, instance in symbols.items():
+		# _ is an anonymous variable
+		# Since we don't care about the iteration value (or rather what iteration # we're on) we can use this
+		# to keep us from having an unused variable
+
+		# Iterate over values for each key to add corresponding # of instances for each symbol
+		for _ in range(instance):
+			# Add key (or rather symbol) to list
+			all_symbols.append(symbol)
+
+	# Randomly select and place symbols in all rows and place those rows in our columns for each spin
+	# To visualize it: (reels = [[row1,row2,row3], [row1,row2,row3], [row1,row2,row3]])
+	reels = []
+	# Iterate over number of columns we established in global variable
+	for _ in range(cols):
+		column = []
+		# Create copy of list (as opposed to just a reference to the variable)
+		current_symbols = all_symbols[:]
+		# Iterate over all rows for given column
+		# Number of rows cannot exceed number of symbols
+		for _ in range(rows):
+			# The choice() method returns a randomly selected element
+			var = random.choice(current_symbols)
+			# Remove it from the list so the probability of choosing the same symbol for the same
+			# column decreases correspondingly
+			current_symbols.remove(var)
+			# Add "row" to column
+			column.append(var)
+		# Once all rows have been filled, add column to reel
+		reels.append(column)
+	print(reels)
+	return reels
+
+def transpose(reels: list) -> list:
+	# Transpose the reels matrices using naive method to display them vertically
+	# Since this is a nested list we will need 2 for-loops
+
+	# Basically print 1st character of each sublist (column) in the same line
+	# then print new line for the 2nd and so on
+	# For a slot machine with 3 rows and columns
+	# column1[0], column2[0], column3[0]
+	# column1[1], column2[1], column3[1]
+	# column1[2], column2[2], column3[2]
+
+	# Get number of elements in a sublist (column) to iterate over (determines # of rows)
+	for i in range(len(reels[0])):
+		# Iterate over each sublist (column)
+		for column in reels:
+			# Select element in column positionally, print it, and add " | " at the end
+			print(column[i], end=" | ")
+		# Once the nth element in all sublists has been printed on same line, print new empty line for next row
+		print()
+
+def check_winnings(machine, lines, bet, values):
 	winnings = 0
 	# Iterate over # of lines (rows) player bet on to check if all 3 symbols in a given row match
 	# Lines are positional meaning the player doesn't get to choose which rows they bet on, rather
@@ -145,7 +157,7 @@ def check_winnings(reels: list, lines: int, bet: int, values: dict) -> int:
 	# If player only bet on 2, any remaining rows will not be checked
 	for line in range(lines):
 		# Check what the first symbol in current row is (reels[][]=reels(x,y)=reels(column,row))
-		first_symbol = reels[0][line]
+		first_symbol = machine[0][line]
 		print(first_symbol)
 		# Iterate over all columns to compare the other symbols in the row
 		# Iterate over each list (column), not range
@@ -208,36 +220,6 @@ values = {"A":5,"B":4,"C":3,"D":2,}
 # Only really useful when used in conjunction with a static type checker
 ROWS: int = 3 # Cannot exceed print(len(all_symbols)) (number of all symbols available)
 COLS: int = 3 # Can have as many as we want
-
-# Add python decorator to pass this function to timer()
-#@timer
-def main():
-	balance = deposit()
-	lines = get_number_of_lines()
-	while True:
-		bet = get_bet()
-		total_bet = lines * bet
-		max_dynamic_bet = round(balance / lines)
-		if total_bet > balance:
-			print(f"${bet} on {lines} lines is ${total_bet}, which exceeds your balance of ${balance}\n"
-			      f"Your maximum bet per line is ${max_dynamic_bet}")
-		else:
-			break
-	print(f"You are betting ${bet} on {lines} lines.\nYour total bet is ${total_bet}")
-	# Create slow machine object from class
-	machine = Slot_machine(ROWS,COLS,symbols)
-	var = input("Would you like to spin the slot machine? ")
-	if var == 'yes':
-		reels = machine.spin() # Generate reels
-		#print(reels)
-		reels_vertical = machine.transpose(reels) # Print them vertically
-	else:
-		print("See ya next time!")
-		exit()
-	winnings = check_winnings(reels, lines, bet, values)
-	
-	#if winnings > 0:
-		#print(f"Congratulations! You've won ${winnings}")
 
 # This convention is importtant to have when importing modules so you don't run code you didn't intend to
 # In other words, the code below this line will only execute when run within this script
