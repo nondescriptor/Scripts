@@ -5,7 +5,7 @@
 # It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
 # Finally, it calculates the amount won by the user
 
-class Slot_machine:
+class SlotMachine:
 
 	def __init__(self, rows, cols, symbols):
 		self.rows = rows
@@ -26,7 +26,8 @@ class Slot_machine:
 		# which will iterate over both (key=symbol and # of value=# of instances) instead of only one
 		for symbol, instance in self.symbols.items():
 			# _ is an anonymous variable
-			# Since we don't care about the iteration value (or rather what iteration # we're on) we can use this
+			# Since we don't care about the iteration value,
+			# or rather what iteration # we're on, we can use this
 			# to keep us from having an unused variable
 
 			# Iterate over values for each key to add corresponding # of instances for each symbol
@@ -56,11 +57,19 @@ class Slot_machine:
 			reels.append(column)
 		return reels
 
-	# I've applied 'type hints' to this function just for the sake of trying it out
-	# -> tells us the data type of the output
-	# Type hints are only really useful when using a static type checker in vscode (or whatever IDE)
-	# and also to be extra explicit to whoever else comes across your script
-	def transpose(self, reels: list) -> list:
+	# When defining a function you can make optional parameters
+	# If no argument is passed to the function, it will print "hello world" by default
+	# Without the equals sign, the parameter is required and positional
+	"""
+	def hello(user_defined_default_arg="world")
+		print("hello,", user_defined__default_arg)
+	
+	hello()
+	name = input("What's your name? ")
+	hello(name)
+	"""
+
+	def transpose(self, reels):
 		# Transpose the reels matrices using naive method to display them vertically
 		# Since this is a nested list we will need 2 for-loops
 
@@ -76,6 +85,7 @@ class Slot_machine:
 			# Iterate over each sublist (column)
 			for column in reels:
 				# Select element in column positionally, print it, and add " | " at the end
+				# by changing the default value of the parameter
 				print(column[i], end=" | ")
 			# Once nth element in all sublists has been printed on same line, print new empty line for next row
 			print()
@@ -139,36 +149,39 @@ def get_bet():
 # and also to be extra explicit to whoever else comes across your script
 def check_winnings(reels: list, lines: int, bet: int, values: dict) -> int:
 	winnings = 0
+	# Remove first sublist because checking if the 1st symbol matches the first symbol is redundant
+	cols_to_check = reels[:]
+	var = reels[0]
+	cols_to_check.remove(var)
 	# Iterate over # of lines (rows) player bet on to check if all 3 symbols in a given row match
 	# Lines are positional meaning the player doesn't get to choose which rows they bet on, rather
 	# they go in order from top to bottom
 	# If player only bet on 2, any remaining rows will not be checked
 	for line in range(lines):
-		# Check what the first symbol in current row is (reels[][]=reels(x,y)=reels(column,row))
+		# Check what the first symbol is in each row (all symbols in 1st column)
+		# reels[column][row or element #]
+		# It helps to visualize it by not thinking about the transposed version
 		first_symbol = reels[0][line]
-		print(first_symbol)
-		# Iterate over all columns to compare the other symbols in the row
-		# Iterate over each list (column), not range
-		# Since reels is a nested list we need a double for loop (or list comprehension)
-		#for column in reels:
-			#print(column)
-			#for value in range(len(column)):
-				#print(value)
-				# Define what symbol to compare to
-				# This basically compares the first symbol with itself during the first run
-				#symbol_to_check = column[value]
-				#print(symbol_to_check)
-				#print(f"this is the second symbol {symbol_to_check}")
-				# If symbols don't match, player lost that line, so break and check next line (row)
-				# if symbol does match, continue for-loop and check next column's symbol
+		print(f"first symbol: {first_symbol}")
+		# Iterate over all columns, except the first, to compare the other symbols in the current the row
+		# does reels[0][0] == reels[1][0]?
+		for column in cols_to_check:
+			print(column)
+			for element in range(lines):
+				symbol_to_check = column[element]
+				print(symbol_to_check)
+				# If symbols don't match, player lost that line, so break out of both for-loops
+				# to get new first symbol for next line (row)
+				# for-loops will not start over but instead pick up where they left off
+				# if symbol does match, continue current for-loop
 				# Once last symbol matches, for loop ends and calculate winnings for that row
-				#if first_symbol != symbol_to_check:
-					#break
-			#break
+				if first_symbol != symbol_to_check:
+					break
+			break
 		# this else is for the for loop
 		# if all symbols match, no break occurs and else statement runs for that particular line
 		#else:
-				# This will return the multiplier given the symbol associated with it and multiply it by the bet
+		# Retrieve multiplier given the symbol associated with it
 		#winnings = values[first_symbol] * bet
 	#return winnings"""
 
@@ -225,11 +238,11 @@ def main():
 			break
 	print(f"You are betting ${bet} on {lines} lines.\nYour total bet is ${total_bet}")
 	# Create slow machine object from class
-	machine = Slot_machine(ROWS,COLS,symbols)
+	machine = SlotMachine(ROWS,COLS,symbols)
 	var = input("Would you like to spin the slot machine? ")
 	if var == 'yes':
 		reels = machine.spin() # Generate reels
-		#print(reels)
+		print(reels)
 		reels_vertical = machine.transpose(reels) # Print them vertically
 	else:
 		print("See ya next time!")
