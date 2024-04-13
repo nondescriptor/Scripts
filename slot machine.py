@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/bin/python3
 
 # The script asks user how much they want to bet and on how many lines (max 10)
 # It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
@@ -18,7 +18,7 @@ class SlotMachine:
 			for _ in range(instance):
 				all_symbols.append(symbol)
 
-		# Create rows with symbols picked randomly from list
+		# Create nested list of rows and columns with symbols picked randomly from list
 		reels = []
 		for _ in range(self.cols):
 			column = []
@@ -34,8 +34,8 @@ class SlotMachine:
 
 		return reels
 
+	# Transpose the reels matrices using naive method to display them vertically
 	def transpose(self, reels):
-		# Transpose the reels matrices using naive method to display them vertically
 		for i in range(len(reels[0])):
 			for column in reels:
 				# Select nth element from each column and print it on same row
@@ -164,7 +164,7 @@ def main():
 			break
 	print(f"You are betting ${bet} on {lines} lines.\nYour total bet is ${total_bet}")
 
-	# Create slow machine object from class
+	# Create slot machine object from class
 	machine = SlotMachine(ROWS,COLS,symbols)
 	print()
 
