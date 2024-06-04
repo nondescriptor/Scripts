@@ -218,67 +218,76 @@ function confirm() {
 }
 
 function main() {
-	# Where are playlists stored?
+	# Path to playlists
 	declare -rg path=~/Music/'Playlists'/
-	# Create list of all playlists
-	list=$(ls "$path" | egrep '\.m3u$')
-	# Create temp directory to work in
-	dir=$(mktemp -d)
-	# Delete temp directory if script exists
-	trap "rm -r $dir" EXIT
-	local number_of_playlists=$(echo "$list" | wc -l)
-	local x=0
 
-	# Delete previous log file if it exists
+	# Create temp directory and delete it when script exits anywhere
+	dir=$(mktemp -d)
+	trap "rm -r $dir" EXIT
+
+	# Delete old log file if it exists
 	! trash "$path"errors.log > /dev/null 2>&1
 
-	# Create empty arrays
-	original_list=()
+	# Declare arrays
+	list=($(ls "$path" | egrep '\.m3u$'))	# Original playlists
 	temp_list=()
 	temp_fixed_list=()
 
+	local number_of_playlists=${#list[@]}
+	local x=0
+
 	# Check if playlist has been fixed already
-	echo "1 cleaning playlists"
-	for playlist in $list; do
+	echo "1. Cleaning playlists"
+	for playlist in ${list[@]}; do
 		# If playlist contains string then it has not been fixed yet
 		if grep "#EXTENC" "$path"$playlist > /dev/null 2>&1; then
-			echo "- fixing $playlist"
-			# Create array of originals
-			original_list+=("$path"$playlist)
+			echo "   - fixing $playlist"
 
-			# Create copy of originals
+			# Create copy of original for manipulation, and add it to array
 			temp_playlist=$(mktemp --tmpdir=/$dir $playlist-XXXXX)
 			cat "$path"$playlist > $temp_playlist
-
-			# Pass the new playlist to the fix function
 			fix $temp_playlist
-			# Store in array for later manipulation
+			delete $temp_playlist
 			temp_list+=($temp_playlist)
 
-			# Copy fixed versions in separate array to overwrite originals
-			# upon user confirmation at the end
+			# Create copy of copy and add it to array
+			# Will be used to overwrite original upon user confirmation
 			temp_fixed_playlist=$(mktemp --tmpdir=/$dir "$playlist"_fixed-XXXXX)
 			cat $temp_playlist > $temp_fixed_playlist
 			temp_fixed_list+=($temp_fixed_playlist)
 		else
-			# Doing ((x++)) suppressed echo commands for some reason
-			x=$(( x + 1 ))
-			echo "- skipping $playlist"
+			echo "   - no fixing required for $playlist"
+
+			# Even if playlist has been fixed already, check for deprecated entries again
+			# Add it to same array
+			temp_playlist=$(mktemp --tmpdir=/$dir $playlist-XXXXX)
+			cat "$path"$playlist > $temp_playlist
+			delete $temp_playlist
+			temp_list+=($temp_playlist)
+
+			# Create copy of copy and add it to array
+			# Will be used to overwrite original upon user confirmation
+			temp_fixed_playlist=$(mktemp --tmpdir=/$dir "$playlist"_fixed-XXXXX)
+			cat $temp_playlist > $temp_fixed_playlist
+			temp_fixed_list+=($temp_fixed_playlist)
+
+			((x++))
 		fi
 	done
 
-	# Exit script if all playlists were skipped
-	if [ $x -eq $number_of_playlists ]; then
-		echo -e "\nNo playlists available for import \nExiting now"
+	# Exit script if all playlists were skipped and no songs were deleted
+	if [ $x -eq $number_of_playlists ] && [ ! -e "$path"errors.log ]; then
+		echo -e "   No changes have been made to playlists\n   Exiting now"
 		exit 0
+	else
+	# If any changes were made, convert all playlists again
+		XML_convert
+		import
+		verify_playlists
+		verify_library
+		notify
+		confirm
 	fi
-
-	XML_convert
-	import
-	verify_playlists
-	verify_library
-	notify
-	confirm
 }
 #===============================================================================================================
 main

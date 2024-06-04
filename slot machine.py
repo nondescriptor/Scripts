@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # The script asks user how much they want to bet and on how many lines (max 10)
 # It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
