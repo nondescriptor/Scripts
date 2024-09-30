@@ -16,6 +16,4 @@ echo "hello world"
 ```
 I'm actually surprised that I never touched powershell when I was a Windows user. Ironically, Linux forced me to get comfortable with the command line because I was always running into issues with my particular setup.
 
-Once I was had a handle on it, I decided to switch back to Windows and give powershell a go. From there, python was a no brainer given its ubiquity in the industry.
-
-I'm not a software developer by any means, but I've learned enough to make my life easier.
+Once I had a handle on it, I decided to switch back to Windows and give PowerShell a go. From there, python was a no brainer given its ubiquity in the industry.

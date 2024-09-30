@@ -5,7 +5,7 @@ function DefaultPrinter {
 	$Title = 'Warning'
 	$Icon = [System.Windows.MessageBoxImage]::Warning
 	$Buttons = 'OK'
-	
+
 	Write-Output 'Checking default printer...'
 	$PrinterName = Get-CimInstance -ClassName Win32_Printer -Filter "Default = 'true'" |
 	Select-Object -ExpandProperty Name
@@ -76,7 +76,7 @@ function Scan {
 	$Title = 'Warning'
 	$Icon = [System.Windows.MessageBoxImage]::Warning
 	$Buttons = 'OK'
-	
+
 	# Use WIA object hierarchy to create scanner object and connect
 	$deviceManager = new-object -ComObject WIA.DeviceManager
 	$device = $deviceManager.DeviceInfos.Item(1).Connect()
@@ -132,12 +132,13 @@ function Scan {
 }
 
 function ConvertPDF {
+	# Default app must be "photos" for this to work
     # Convert file to PDF by using 'Microsoft print to PDF' printer
     Write-Output 'Converting to PDF now...'
-    
+
     # Build filepath from current user's desktop path and filename 'Scan 0'
     $newfilename = "$([Environment]::GetFolderPath("Desktop"))\Scan {0}.pdf"
-    
+
     # If a file named 'Scan 0' already exists, increment the index as long as needed
 	$index = 0
 	while (test-path ($newfilename -f $index)) {
