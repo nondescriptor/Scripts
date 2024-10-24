@@ -1,10 +1,12 @@
 # `Hello` potential employer
 
-This repo contains a collection of scripts I've written either for personal productivity or for my IT career.
+This repo contains some of the scripts I've written for personal productivity and my IT career.
 - A few examples include:
   - `salt.py` encrypts and decrypts text files.
   - `playlist importer.sh` edits, converts, and imports android playlists into rhythmbox.
   - `scanner.ps1` automates the scanning process in Windows and converts result to a pdf.
+
+Most of them are user-specific, but salt.py and slot machine.py can be run on any machine.
 
 # About `me`
 
