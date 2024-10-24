@@ -2,8 +2,9 @@
 
 This repo contains a collection of scripts I've written either for personal productivity or for my IT career.
 - A few examples include:
-  - `playlist importer.sh` which edits, converts, and imports android playlists into rhythmbox.
-  - `scanner.ps1` which automates the scanning process in windows and converts result to pdf.
+  - `salt.py` encrypts and decrypts text files.
+  - `playlist importer.sh` edits, converts, and imports android playlists into rhythmbox.
+  - `scanner.ps1` automates the scanning process in windows and converts result to a pdf.
   - `slot machine.py` is a simple slot machine CLI game.
 
 # About `me`
