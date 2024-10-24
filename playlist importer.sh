@@ -290,4 +290,5 @@ function main() {
 	fi
 }
 #===============================================================================================================
+# If script isn't working, delete everything in local rhythmbox directory
 main
