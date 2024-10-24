@@ -13,7 +13,7 @@ I was introduced to programming in college, but it wasn't until several years la
 
 It all started when I switched from Windows to Linux and ran my first command:
 ```sh
-echo "hello world"
+sudo apt update && sudo apt upgrade
 ```
 I'm actually surprised that I never touched powershell when I was a Windows user. Ironically, Linux forced me to get comfortable with the command line because I was always running into issues with my particular setup.
 

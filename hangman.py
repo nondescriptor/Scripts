@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-# This script is a work in progress. I wanted to try my hands at creating a simple hangman game using
+# WORK IN PROGRESS
+
+# I wanted to try my hands at creating a simple hangman game using
 # the popular pygame library
 # help('pygame')
 
