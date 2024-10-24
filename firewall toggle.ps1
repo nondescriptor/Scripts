@@ -1,8 +1,6 @@
-# This scripts simply toggles firewall rules on/off 
-# It displays messagebox to let user know current rule status
+# This scripts simply toggles firewall rules on/off
 
 # Ensure messageboxes appear outside of ISE
-# Import presentation framework-related libraries into current powershell session
 Add-Type -AssemblyName PresentationFramework
 
 # It's generally better to use the Filter parameter than Where-Object or where() because the Filter parameter passes instructions to .NET to limit output at the provider level, rather than having to pull all of those objects out and then filtering the output at the pipeline level. However, for this use-case, it really doesn't matter.
@@ -15,6 +13,7 @@ $Title = 'Warning'
 $Icon = [System.Windows.MessageBoxImage]::Warning
 $Buttons = 'YesNoCancel'
 
+# If it's disabled, enable it and vice-versa.
 if ($condition) {
 	$Message = 'Firewall rule is currently disabled. Would you like to enable it?'
 	$UserInput = [System.Windows.MessageBox]::Show($Message,$Title,$Buttons,$Icon)
