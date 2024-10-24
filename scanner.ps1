@@ -172,7 +172,6 @@ function ConvertPDF {
 }
 #===============================================================================================================
 # Ensure messageboxes appear outside of PS ISE
-# Import presentation framework-related libraries into current powershell session
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName System.Windows.Forms
 
