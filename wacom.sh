@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script toggles easystroke scrolling on and off for applications that do not support wacom driver
 
 set -euxo pipefail
 trap 'printf "Error: Line $LINENO\nExit code: $?\n"' ERR
 
-# Get current scrolling button value
+# Get current button state
 state1=$(xsetwacom --get "Wacom Intuos PT S 2 Pen stylus" Button 2 | awk 'NR==1{print $1}')
 
 wacom () {
