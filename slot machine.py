@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-# The script asks user how much they want to bet and on how many lines (max 10)
-# It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind
-# Finally, it calculates the amount won by the user
+# This script asks the user how much they want to bet and on how many lines (max 10).
+# It creates 3 columns of randomly generated symbols and checks if any row has 3 of a kind.
+# Finally, it calculates the amount won by the user.
+
+import time # provides time-related functions
+import random # generates random numbers
+import subprocess, sys # interact with OS
 
 class SlotMachine:
-
 	def __init__(self, rows, cols, symbols):
 		self.rows = rows
 		self.cols = cols
@@ -131,10 +134,6 @@ def timer(func):
 		print(f"\n\nFunction {func.__name__}() took {t2} seconds")
 	return wrapper
 #===============================================================================================================
-import time # provides time-related functions
-import random # generates random numbers
-import subprocess, sys # interact with OS
-
 MAX_LINES = 10 # max number of rows player can bet on
 MAX_BET = 100
 MIN_BET = 1
