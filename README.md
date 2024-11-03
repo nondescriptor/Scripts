@@ -1,7 +1,7 @@
 # `Hello` potential employer
 
 This repo contains some of the scripts I've written for personal productivity and my IT career.
-- A few examples include:
+- A few examples include the following:
   - `salt.py` encrypts and decrypts text files.
   - `playlist importer.sh` edits, converts, and imports android playlists into rhythmbox.
   - `scanner.ps1` automates the scanning process in Windows and converts result to a pdf.
