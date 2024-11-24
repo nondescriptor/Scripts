@@ -18,4 +18,4 @@ sudo apt update && sudo apt upgrade
 ```
 I'm actually surprised that I never touched PowerShell when I was a Windows user. Ironically, Linux forced me to get comfortable with the command line because I was always running into issues with my particular setup.
 
-Once I was comfortable writing Bash scripts, I decided to give PowerShell a go. From there, Python was the logical next choice given its ubiquity and demand in the industry.
+Once I was comfortable writing Bash scripts, I decided to give PowerShell a go. From there, Python was the logical next choice, given its ubiquity and demand in the industry.
