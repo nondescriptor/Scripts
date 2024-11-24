@@ -30,4 +30,4 @@ else
 	# Disable middle click system-wide to avoid issues
 	xmodmap -e "pointer = 1 25 3 4 5 6 7 8 9" > /dev/null 2>&1
 	notify-send -t 3000 --icon=/usr/share/icons/hicolor/scalable/apps/easystroke.svg 'Easystroke scrolling enabled'
-fitest
+fi
