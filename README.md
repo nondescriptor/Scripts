@@ -1,6 +1,6 @@
-# `Hello` potential employer
+# `Hello`, future employer!
 
-This repo contains some of the scripts I've written for personal productivity and my IT career.
+This repo contains some of the scripts I've written for my IT career, productivity, and fun.
 - A few examples include the following:
   - `salt.py` encrypts and decrypts text files.
   - `playlist importer.sh` edits, converts, and imports android playlists into rhythmbox.
@@ -18,4 +18,4 @@ sudo apt update && sudo apt upgrade
 ```
 I'm actually surprised that I never touched PowerShell when I was a Windows user. Ironically, Linux forced me to get comfortable with the command line because I was always running into issues with my particular setup.
 
-Once I was comfortable writing bash scripts, I decided to give PowerShell a go. From there, python was the logical next choice given its ubiquity and demand in the industry.
+Once I was comfortable writing Bash scripts, I decided to give PowerShell a go. From there, Python was the logical next choice given its ubiquity and demand in the industry.
