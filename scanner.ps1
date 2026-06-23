@@ -77,6 +77,10 @@ function Scan {
 	$Icon = [System.Windows.MessageBoxImage]::Warning
 	$Buttons = 'OK'
 
+	# Get ProgID
+	Get-ChildItem -Path REGISTRY::HKEY_CLASSES_ROOT | Where-Object {$_.PSChildName -like '*WIA*'} |
+    Select-Object -ExpandProperty PSChildName
+
 	# Use WIA object hierarchy to create scanner object and connect
 	$deviceManager = new-object -ComObject WIA.DeviceManager
 	$device = $deviceManager.DeviceInfos.Item(1).Connect()
